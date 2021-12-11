@@ -86,12 +86,29 @@ fi
 # - Select (or change) different features, options, etc. Make you best choice and try several options.
 
 compute_lp() {
-    for filename in $(cat $lists/class/all.train $lists/class/all.test); do
+    for filename in $(sort $lists/class/all.train $lists/class/all.test); do
         mkdir -p `dirname $w/$FEAT/$filename.$FEAT`
         EXEC="wav2lp 8 $db/$filename.wav $w/$FEAT/$filename.$FEAT"
         echo $EXEC && $EXEC || exit 1
     done
 }
+
+compute_lpcc() {
+    for filename in $(sort $lists/class/all.train $lists/class/all.test); do
+        mkdir -p `dirname $w/$FEAT/$filename.$FEAT`
+        EXEC="wav2lpcc 8 12 $db/$filename.wav $w/$FEAT/$filename.$FEAT" #orden LPC y orden LPCC
+        echo $EXEC && $EXEC || exit 1
+    done
+}
+
+compute_mfcc() {
+    for filename in $(sort $lists/class/all.train $lists/class/all.test); do
+        mkdir -p `dirname $w/$FEAT/$filename.$FEAT`
+        EXEC="wav2mfcc 20 40 $db/$filename.wav $w/$FEAT/$filename.$FEAT"  #Frecuencia de muestreo, orden del MFCC y orden del banco de filtros
+        echo $EXEC && $EXEC || exit 1
+    done
+}
+
 
 
 #  Set the name of the feature (not needed for feature extraction itself)
@@ -122,7 +139,7 @@ for cmd in $*; do
        for dir in $db/BLOCK*/SES* ; do
            name=${dir/*\/}
            echo $name ----
-           gmm_train  -v 1 -T 0.001 -N5 -m 1 -d $w/$FEAT -e $FEAT -g $w/gmm/$FEAT/$name.gmm $lists/class/$name.train || exit 1
+           gmm_train -v 1 -T 1e-6 -N 40 -m 50 -d $w/$FEAT -e $FEAT -g $w/gmm/$FEAT/$name.gmm $lists/class/$name.train || exit 1
            echo
        done
    elif [[ $cmd == test ]]; then
