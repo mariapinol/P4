@@ -1,4 +1,4 @@
-/* Copyright (C) Universitat Politï¿½cnica de Catalunya, Barcelona, Spain.
+/* Copyright (C) Universitat Politècnica de Catalunya, Barcelona, Spain.
  *
  * Permission to copy, use, modify, sell and distribute this software
  * is granted provided this copyright notice appears in all copies.
@@ -7,7 +7,6 @@
  * antonio.bonafonte@upc.edu
  * Barcelona, November 2011
  */
-
 
 #include <fstream>
 #include "gmm.h"
