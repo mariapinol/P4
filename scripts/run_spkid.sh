@@ -208,13 +208,13 @@ for cmd in $*; do
 	   # recognized is lists/final/class.test
        #echo "To be implemented ..."
        # \DONE Implementación de finalclass hecha
-       compute_$FEAT $db_test $lists/final/class.test #Parametrizamos la base de datos
-
-       #(gmm_classify -d $w/$FEAT -e $FEAT -D $w/gmm/$FEAT -E gmm $lists/gmm.list  $lists/final/class.test | tee class_test.log) || exit 1
-
-       (gmm_classify -d $w/$FEAT -e $FEAT -D $w/gmm/$FEAT -E gmm $lists/gmm.list  $lists/final/class.test | tee $w/class_final_${FEAT}_${name_exp}.log) | tee class_test0.log || exit 1
-       cat class_test0.log | cut -f1,2 >class_test.log
-       rm class_test0.log
+           for filename in $(cat $lists/final/class.test); do
+            mkdir -p `dirname $w/$FEAT/$filename.$FEAT`
+            EXEC="wav2mfcc 8 16 24 spk_8mu/sr_test/$filename.wav $w/$FEAT/$filename.$FEAT"
+            echo $EXEC && $EXEC || exit 1
+        done 
+   
+        (gmm_classify -d $w/$FEAT -e $FEAT -D $w/gmm/$FEAT -E gmm $lists/gmm.list  $lists/final/class.test | tee class_test.log) #|| exit 1
    
    elif [[ $cmd == finalverif ]]; then
        ## @file
