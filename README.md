@@ -97,7 +97,7 @@ ejercicios indicados.
 
     Para que una parametrización contenga más información que otra, debe tener los coeficientes más incorrelados entre sí porque no queremos información redundante.
     
-    Por tanto, y observando las tres gráficas, podemos deducir que los coeficientes más incorrelados son los que se encuentran más dispersos, es decir, en nuestro caso, los coeficientes LPCC.
+    Por tanto, y observando las tres gráficas, podemos deducir que los coeficientes más incorrelados son los que se encuentran más dispersos, es decir, en nuestro caso, los coeficientes MFCC. Aún así, observamos que los coeficientes LPCC también están muy disperso y en consecuencia, incorrelados. 
 
 - Usando el programa <code>pearson</code>, obtenga los coeficientes de correlación normalizada entre los
   parámetros 2 y 3 para un locutor, y rellene la tabla siguiente con los valores obtenidos.
@@ -122,8 +122,18 @@ ejercicios indicados.
   | &rho;<sub>x</sub>[2,3] | -0.664123  | 0.292243     | 0.067202    |
   
   + Compare los resultados de <code>pearson</code> con los obtenidos gráficamente.
+
+  Un valor de |ρx[2,3]| alto nos indica que los coeficientes están muy correlados y un valor bajo nos indica que los coeficientes están poco correlados (|ρx[2,3]| ∊ [0,1]). Si nos fijamos en la tabla, observamos que los resultados de pearson concuerdan con las conclusiones obtenidas al analizar las gráficas: LPC es la parametrización que nos aporta menos información con diferencia, MFCC la que más, ya que sus coeficientes están muy poco correlados, y LPCC nos aportá un poco menos de información que MFCC. Esto nos ayuda a ver que MFCC será la parametrización adecuada para optimizar nuestro sistema con diferencia.
+
   
 - Según la teoría, ¿qué parámetros considera adecuados para el cálculo de los coeficientes LPCC y MFCC?
+
+Para los coeficientes LPCC se usa lpc_order=8, como esta definido en la función compute_lp(), y el número de cepstrum es igual a 3P/2 donde P=lpc_order=8 , por lo tanto, nceps=12. Finalmente, hemos decidido incrementar estos valores para obtener mejores resultados.
+
+Para los coeficientes MFCC se usan los primeros 13 coefficientes + un 50% más, por lo tanto mfcc_order=19. I el numero de filtros suele ir de 24 a 40, por lo que usamos un valor intermedio de nfilter=30.
+
+
+
 
 ### Entrenamiento y visualización de los GMM.
 
