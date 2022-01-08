@@ -60,9 +60,16 @@ ejercicios indicados.
 
 - Escriba el *pipeline* principal usado para calcular los coeficientes cepstrales de predicción lineal
   (LPCC) en su fichero <code>scripts/wav2lpcc.sh</code>:
+  
+  sox $inputfile -t raw -e signed -b 16 - | $X2X +sf | $FRAME -l 240 -p 80 | $WINDOW -l 240 -L 240 | $LPC -l 240 -m $lpc_order | $LPC2C -m $lpc_order -M $nceps > $base.lpcc
+  
 
 - Escriba el *pipeline* principal usado para calcular los coeficientes cepstrales en escala Mel (MFCC) en su
   fichero <code>scripts/wav2mfcc.sh</code>:
+  
+  sox $inputfile -t raw -e signed -b 16 - | $X2X +sf | $FRAME -l 240 -p 80 | $MFCC -s 8000 -n $nfiltros -l 240 -m $mfcc_order > $base.mfcc
+  
+  
 
 ### Extracción de características.
 
@@ -87,6 +94,10 @@ ejercicios indicados.
     fmatrix_show work/mfcc/BLOCK01/SES010/*.mfcc | egrep '^\[' | cut -f4,5 > mfcc_2_3.txt
     
   + ¿Cuál de ellas le parece que contiene más información?
+
+    Para que una parametrización contenga más información que otra, debe tener los coeficientes más incorrelados entre sí porque no queremos información redundante.
+    
+    Por tanto, y observando las tres gráficas, podemos deducir que los coeficientes más incorrelados son los que se encuentran más dispersos, es decir, en nuestro caso, los coeficientes LPCC.
 
 - Usando el programa <code>pearson</code>, obtenga los coeficientes de correlación normalizada entre los
   parámetros 2 y 3 para un locutor, y rellene la tabla siguiente con los valores obtenidos.
