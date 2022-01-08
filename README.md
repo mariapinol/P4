@@ -32,12 +32,30 @@ ejercicios indicados.
 - Analice el script `wav2lp.sh` y explique la misión de los distintos comandos involucrados en el *pipeline*
   principal (`sox`, `$X2X`, `$FRAME`, `$WINDOW` y `$LPC`). Explique el significado de cada una de las 
   opciones empleadas y de sus valores.
+  
+  sox: Sirve para cambiar el formato de una señal de entrada a uno de salida que nos convenga. Para saber las características de sox, escribimos sox -h en el terminal. En nuestro caso, al utilizar -t raw estamos diciendo que queremos un fichero tipo raw. Con -e signed definimos una codificación signed integer. Por último, -b 16 nos dice que queremos 16 bits.
+
+X2X: Programa de sptk que sirve para transformar datos input a otro formato output. La manera de utilizar este comando en el terminal es la siguiente: x2x [+type1 [+type2][–r] [–o] [%format]. En nuestro caso, +sf transforma los datos a short int format.
+
+FRAME: Extrae el frame de la secuencia de datos. -l indica la longitud del frame, y -p indica el periodo del frame.
+
+WINDOW: Enventanado de ventana. -l indica la longitud de frames del input. -L indica la longitud de frames del output.
+
+LPC: Calcula los coeficientes de predicción lineal. -l indica la longitud de frames, y -m indica el orden de coeficientes LPC.
+  
 
 - Explique el procedimiento seguido para obtener un fichero de formato *fmatrix* a partir de los ficheros de
   salida de SPTK (líneas 45 a 47 del script `wav2lp.sh`).
+  
+  Primero de todo, se obtiene el fichero $base.lp con los coeficientes LPC, encadenando los comandos descritos en el apartado anterior.
+
+Segundo, se fija una cabecera para el archivo de salida con el número de filas y columnas de la matriz. El número de columnas será el orden del LPC + 1, puesto que en la primera columna se encuentra el factor de ganancia. El número de filas será el número total de tramas a las que se les ha calculado los coeficientes LPC. Se extrae del fichero .lp convirtiendo el contenido a ASCII con X2X +fa y contando el número de líneas con el comando wc -l.
+  
 
   * ¿Por qué es conveniente usar este formato (u otro parecido)? Tenga en cuenta cuál es el formato de
     entrada y cuál es el de resultado.
+    
+    Porque se tiene un fácil y rápido acceso a todos los datos almacenados con una correspondencia directa entre la posición en la matriz y el orden del coeficiente y número de trama, por lo que simplifica mucho su manipulación a la hora de trabajar. También nos ofrece información directa en la cabecera sobre el número de tramas y número de coeficientes calculados.
 
 - Escriba el *pipeline* principal usado para calcular los coeficientes cepstrales de predicción lineal
   (LPCC) en su fichero <code>scripts/wav2lpcc.sh</code>:
