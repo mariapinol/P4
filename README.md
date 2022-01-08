@@ -170,6 +170,7 @@ Complete el código necesario para entrenar modelos GMM.
   <img width="636" alt="NO CORRESPONDE 2" src="https://user-images.githubusercontent.com/92084115/147713706-bc442b43-f613-49a3-adc6-31181f16800e.png">
 
 
+  Podemos observar que el modelado GMM consigue ajustarse muy bien a las características de su locutor (en este caso, los dos primeros coeficientes MFCC), así cuando comparamos el modelo de un locutor con la población de otro, se aprecia la diferencia entre ambos. Las zonas de población más densa (curva 50%) nos muestran de manera muy visual la gran diferencia entre un locutor y otro, por lo que el modelado GMM es una herramienta muy útil para el reconocimiento y verificación del locutor.
 
 
 ### Reconocimiento del locutor.
